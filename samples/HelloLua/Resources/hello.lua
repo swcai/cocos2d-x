@@ -13,7 +13,7 @@ local function main()
     collectgarbage("setstepmul", 5000)
 
     local cclog = function(...)
-        print(string.format(...))
+        CCLuaLog(string.format(...))
     end
 
     require "hello2"
