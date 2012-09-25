@@ -85,6 +85,10 @@ if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/libsocketcore.so ]; then
 	mv "$APP_ANDROID_ROOT"/libs/armeabi/libsocketcore.so "$APP_ANDROID_ROOT"/assets/socket/core.so
 fi
 
+if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/lfs.so ]; then
+	mv "$APP_ANDROID_ROOT"/libs/armeabi/lfs.so "$APP_ANDROID_ROOT"/assets/lfs.so
+fi
+
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/mime.lua "$APP_ANDROID_ROOT"/assets/
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/socket.lua "$APP_ANDROID_ROOT"/assets/
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/ltn12.lua "$APP_ANDROID_ROOT"/assets/
@@ -94,3 +98,6 @@ cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/ftp.lua "$APP_ANDROID_ROOT"/asse
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/smtp.lua "$APP_ANDROID_ROOT"/assets/socket
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/url.lua "$APP_ANDROID_ROOT"/assets/socket
 
+# copy remdebug.lua to assets
+mkdir -p "$APP_ANDROID_ROOT"/assets/remdebug/
+cp -rf "$COCOS2DX_ROOT"/scripting/lua/remdebug/src/remdebug/engine.lua "$APP_ANDROID_ROOT"/assets/remdebug/
