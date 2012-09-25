@@ -1,3 +1,5 @@
+package.path = "?.lua;./?.lua;"..package.path
+package.cpath = "?.so;./?.so;"..package.cpath
 
 -- for CCLuaEngine traceback
 function __G__TRACKBACK__(msg)
@@ -19,6 +21,15 @@ local function main()
     require "hello2"
     cclog("result is " .. myadd(3, 5))
 
+    require "socket"
+    cclog(package.path)
+    conn, err = socket.connect("127.0.0.1", 8171)
+    cclog(package.cpath)
+    if not conn then
+      cclog(err)
+    else
+      cclog("succeed")
+    end
     ---------------
 
     local winSize = CCDirector:sharedDirector():getWinSize()
