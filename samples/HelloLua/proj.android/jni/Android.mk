@@ -21,7 +21,9 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cocos_lua_static
 
 include $(BUILD_SHARED_LIBRARY)
 
-include $(LOCAL_PATH)/../../../../scripting/lua/socket/Android.mk
+BASE_PATH := $(LOCAL_PATH)
+include $(BASE_PATH)/../../../../scripting/lua/socket/Android.mk
+include $(BASE_PATH)/../../../../scripting/lua/lfs/Android.mk
 
 $(call import-module,cocos2dx)
 $(call import-module,CocosDenshion/android)
