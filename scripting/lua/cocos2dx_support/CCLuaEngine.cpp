@@ -29,7 +29,6 @@ extern "C" {
 #include "lualib.h"
 #include "lauxlib.h"
 #include "tolua_fix.h"
-#include "luasocket.h"
 }
 
 #include "cocos2d.h"
@@ -213,7 +212,6 @@ bool CCLuaEngine::init(void)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     addLuaLoader(loader_Android);
 #endif
-    luaopen_socket_core(m_state);
     return true;
 }
 

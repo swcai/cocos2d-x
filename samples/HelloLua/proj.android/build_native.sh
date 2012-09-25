@@ -68,9 +68,29 @@ done
 if [[ "$buildexternalsfromsource" ]]; then
     echo "Building external dependencies from source"
     "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" $* \
-        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/source"
+        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/source" -B V=1
 else
     echo "Using prebuilt externals"
     "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" $* \
-        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/prebuilt"
+        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/prebuilt" -B V=1
 fi
+
+mkdir -p "$APP_ANDROID_ROOT"/assets/mime/
+mkdir -p "$APP_ANDROID_ROOT"/assets/socket/
+if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/libmimecore.so ]; then
+	mv "$APP_ANDROID_ROOT"/libs/armeabi/libmimecore.so "$APP_ANDROID_ROOT"/assets/mime/core.so
+fi
+
+if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/libsocketcore.so ]; then
+	mv "$APP_ANDROID_ROOT"/libs/armeabi/libsocketcore.so "$APP_ANDROID_ROOT"/assets/socket/core.so
+fi
+
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/mime.lua "$APP_ANDROID_ROOT"/assets/
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/socket.lua "$APP_ANDROID_ROOT"/assets/
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/ltn12.lua "$APP_ANDROID_ROOT"/assets/
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/http.lua "$APP_ANDROID_ROOT"/assets/socket
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/tp.lua "$APP_ANDROID_ROOT"/assets/socket
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/ftp.lua "$APP_ANDROID_ROOT"/assets/socket
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/smtp.lua "$APP_ANDROID_ROOT"/assets/socket
+cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/url.lua "$APP_ANDROID_ROOT"/assets/socket
+
