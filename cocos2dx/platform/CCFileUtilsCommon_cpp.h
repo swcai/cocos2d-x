@@ -389,7 +389,7 @@ const char* CCFileUtils::getResourceDirectory()
 //////////////////////////////////////////////////////////////////////////
 // Notification support when getFileData from invalid file path.
 //////////////////////////////////////////////////////////////////////////
-static bool s_bPopupNotify = true;
+static bool s_bPopupNotify = false;
 
 void CCFileUtils::setPopupNotify(bool bNotify)
 {

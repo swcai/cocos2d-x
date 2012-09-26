@@ -210,7 +210,8 @@ bool CCLuaEngine::init(void)
     tolua_Cocos2d_open(m_state);
     toluafix_open(m_state);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    addLuaLoader(loader_Android);
+    addLuaLoader(loader_C_Android);
+    addLuaLoader(loader_Lua_Android);
 #endif
     return true;
 }

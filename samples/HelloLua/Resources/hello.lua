@@ -1,5 +1,5 @@
 package.path = "?.lua;./?.lua;"..package.path
-package.cpath = "?.so;./?.so;"..package.cpath
+package.cpath = "?.so;./?.so;/data/data/org.cocos2dx.hellolua/lua/?.so;"..package.cpath
 
 -- for CCLuaEngine traceback
 function __G__TRACKBACK__(msg)
@@ -20,6 +20,11 @@ local function main()
 
     require "hello2"
     cclog("result is " .. myadd(3, 5))
+
+    cclog(package.path)
+	require "lfs"
+    cclog(package.cpath)
+	cclog(lfs.currentdir())
 
     require "socket"
     cclog(package.path)

@@ -22,17 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #include "Cocos2dxLuaLoader.h"
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
 #include <string>
+// testing
+#include <dlfcn.h>
 
 using namespace cocos2d;
 
 extern "C"
 {
-    int loader_Android(lua_State *L)
+    int loader_Lua_Android(lua_State *L)
     {
         std::string filename(luaL_checkstring(L, 1));
         filename.append(".lua");
 
+        CCLog("loader_Lua_Android: %s", filename.c_str());
         CCString* pFileContent = CCString::createWithContentsOfFile(filename.c_str());
 
         if (pFileContent)
@@ -50,4 +57,142 @@ extern "C"
 
         return 1;
     }
+
+#if 0
+    static const char *mkfuncname (lua_State *L, const char *modname) {
+        const char *funcname;
+        const char *mark = strchr(modname, *LUA_IGMARK);
+        if (mark) modname = mark + 1;
+        funcname = luaL_gsub(L, modname, ".", LUA_OFSEP);
+        funcname = lua_pushfstring(L, POF"%s", funcname);
+        lua_remove(L, -2);  /* remove 'gsub' result */
+        return funcname;
+    }
+
+    static int ll_loadfunc (lua_State *L, const char *path, const char *sym) {
+        void **reg = ll_register(L, path);
+        if (*reg == NULL) *reg = ll_load(L, path);
+        if (*reg == NULL)
+            return ERRLIB;  /* unable to load library */
+        else {
+            lua_CFunction f = ll_sym(L, *reg, sym);
+            if (f == NULL)
+                return ERRFUNC;  /* unable to find function */
+            lua_pushcfunction(L, f);
+            return 0;  /* return function */
+        }
+    }
+
+    static void **ll_register (lua_State *L, const char *path) {
+        void **plib;
+        lua_pushfstring(L, "%s%s", LIBPREFIX, path);
+        lua_gettable(L, LUA_REGISTRYINDEX);  /* check library in registry? */
+        if (!lua_isnil(L, -1))  /* is there an entry? */
+            plib = (void **)lua_touserdata(L, -1);
+        else {  /* no entry yet; create one */
+            lua_pop(L, 1);
+            plib = (void **)lua_newuserdata(L, sizeof(const void *));
+            *plib = NULL;
+            luaL_getmetatable(L, "_LOADLIB");
+            lua_setmetatable(L, -2);
+            lua_pushfstring(L, "%s%s", LIBPREFIX, path);
+            lua_pushvalue(L, -2);
+            lua_settable(L, LUA_REGISTRYINDEX);
+        }
+        return plib;
+    }
+
+    static void *ll_load (lua_State *L, const char *path) {
+        void *lib = dlopen(path, RTLD_NOW);
+        if (lib == NULL) lua_pushstring(L, dlerror());
+        return lib;
+    }
+
+    static lua_CFunction ll_sym (lua_State *L, void *lib, const char *sym) {
+        lua_CFunction f = (lua_CFunction)dlsym(lib, sym);
+        if (f == NULL) lua_pushstring(L, dlerror());
+        return f;
+    }
+#endif
+
+    void mkDirAndCopySharedLib(std::string path, std::string filename) {
+        path.append(filename);
+        const char *pStr = path.c_str();
+        CCLog("path = %s", pStr);
+        const char *cur = pStr;
+        char *p = NULL; 
+        while ((p = strchr(cur, '/')) != NULL) {
+            *p = '\0';
+            CCLog("Checking dir %s", pStr);
+            DIR *pDir = opendir(pStr);
+            if (pDir == NULL) {
+                if (mkdir(pStr, 0755) != 0)
+                    CCLog("mkdir(%s) failed.", pStr);
+            } else
+                closedir(pDir);
+            *p = '/'; 
+            cur = p + 1;
+        }
+
+        CCLog("final pStr = %s", pStr);
+        FILE *file = fopen(pStr, "w");
+        if (!file) {
+            CCLog("failed to fopen(%s)", pStr);
+            return;
+        }
+
+        CCString* pFileContent = CCString::createWithContentsOfFile(filename.c_str());
+        if (pFileContent)
+            fwrite((void*)pFileContent->getCString(), pFileContent->length(), 1, file);
+        else {
+            CCLog("failed to read content from %s", filename.c_str());
+        }
+        fclose(file);
+    }
+
+    int loader_C_Android(lua_State *L)
+    {
+        std::string basename = CCFileUtils::sharedFileUtils()->getWriteablePath() + "lua/";
+        std::string filename(luaL_checkstring(L, 1));
+        CCLog("loader_C_Android: %s %s", basename.c_str(), filename.c_str());
+        for (std::string::iterator it=filename.begin(); it<filename.end(); it++)
+            if (*it == '.')
+                *it = '/';
+        filename.append(".so");
+        CCLog("update filename: %s", filename.c_str());
+
+        FILE *pFile = fopen((basename + filename).c_str(), "r");
+        if (!pFile) {
+            CCLog("failed to open file");
+            mkDirAndCopySharedLib(basename, filename);
+        } else {
+            fclose(pFile);
+        }
+
+        /* This part is used to dlopen and dlsym */
+        CCLog("dlopen");
+        void *lib = dlopen("/system/lib/libz.so", RTLD_NOW);
+        CCLog("dlopen returned");
+        if (lib == NULL) {
+            CCLog("dlopen failed.");
+            return 1;
+        } else {
+            CCLog("dlsym");
+            lua_CFunction f = (lua_CFunction)dlsym(lib, "gzopen");
+            CCLog("dlsym returned");
+            if (f == NULL) {
+                CCLog("dlsym failed.");
+                return 1;
+            }
+        }
+#if 0
+        char *pathname = basename.append(filename).getCString();
+        char *funcname = mkfuncname(L, luaL_checkstring(L, 1));
+        if (ll_loadfunc(L, pathname, funcname) != 0)
+            loaderror(L, pathname);
+#endif
+        CCLog("happy return");
+        return 1;  /* library loaded successfully */
+    }
+
 }

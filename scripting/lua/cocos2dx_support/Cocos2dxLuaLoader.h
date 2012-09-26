@@ -32,7 +32,8 @@ extern "C"
 #include "lualib.h"
 #include "lauxlib.h"
 
-extern int loader_Android(lua_State *L);
+extern int loader_Lua_Android(lua_State *L);
+extern int loader_C_Android(lua_State *L);
 }
 
 #endif // __COCOS2DX_LUA_LOADER_H__
