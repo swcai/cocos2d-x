@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := luasocket_core
+LOCAL_MODULE    := libluasocket
 
 LOCAL_MODULE_FILENAME := libsocketcore
 
@@ -26,13 +26,19 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../lua \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src \
                     $(LOCAL_PATH)/../lua 
 
-LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+LOCAL_SHARED_LIBRARIES := libhellolua
+
+#LOCAL_CFLAGS += -fvisibility=hidden
+LOCAL_CFLAGS += -fPIC
+
+#LOCAL_LDLIBS := -lhellolua
+#LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
 
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := luamime_core
+LOCAL_MODULE    := libluamime
 
 LOCAL_MODULE_FILENAME := libmimecore
 
@@ -45,6 +51,10 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../lua \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src \
                     $(LOCAL_PATH)/../lua 
 
-LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+LOCAL_SHARED_LIBRARIES := libhellolua
+#LOCAL_LDLIBS := -lhellolua
+
+#LOCAL_CFLAGS += -fvisibility=hidden
+LOCAL_CFLAGS += -fPIC
 
 include $(BUILD_SHARED_LIBRARY)

@@ -65,14 +65,14 @@ static void ll_unloadlib (void *lib) {
 }
 
 
-static void *ll_load (lua_State *L, const char *path) {
+void *ll_load (lua_State *L, const char *path) {
   void *lib = dlopen(path, RTLD_NOW);
   if (lib == NULL) lua_pushstring(L, dlerror());
   return lib;
 }
 
 
-static lua_CFunction ll_sym (lua_State *L, void *lib, const char *sym) {
+lua_CFunction ll_sym (lua_State *L, void *lib, const char *sym) {
   lua_CFunction f = (lua_CFunction)dlsym(lib, sym);
   if (f == NULL) lua_pushstring(L, dlerror());
   return f;
@@ -223,6 +223,8 @@ static lua_CFunction ll_sym (lua_State *L, void *lib, const char *sym) {
 
 
 #else
+
+#warning "FAINT"
 /*
 ** {======================================================
 ** Fallback for other systems

@@ -23,7 +23,7 @@
 * This macro prefixes all exported API functions
 \*-------------------------------------------------------------------------*/
 #ifndef MIME_API
-#define MIME_API extern
+#define MIME_API 
 #endif
 
 MIME_API int luaopen_mime_core(lua_State *L);

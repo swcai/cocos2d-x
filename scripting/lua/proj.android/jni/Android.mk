@@ -47,6 +47,12 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../lua \
                            $(LOCAL_PATH)/../../cocos2dx_support 
           
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/ \
-                    $(LOCAL_PATH)/../../lua 
+                    $(LOCAL_PATH)/../../lua \
+                    $(LOCAL_PATH)/../../../../cocos2dx \
+                    $(LOCAL_PATH)/../../../../cocos2dx/include \
+                    $(LOCAL_PATH)/../../../../cocos2dx/kazmath/include \
+                    $(LOCAL_PATH)/../../../../cocos2dx/platform/android
+
+LOCAL_LDLIBS := -ldl
 
 include $(BUILD_STATIC_LIBRARY)

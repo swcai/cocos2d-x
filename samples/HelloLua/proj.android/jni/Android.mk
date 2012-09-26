@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := hellolua_shared
+LOCAL_MODULE := libhellolua
 
 LOCAL_MODULE_FILENAME := libhellolua
 
@@ -19,14 +19,14 @@ LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dx_static
 LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
 LOCAL_WHOLE_STATIC_LIBRARIES += cocos_lua_static
 
+LOCAL_LDLIBS := -ldl
+
 include $(BUILD_SHARED_LIBRARY)
 
 BASE_PATH := $(LOCAL_PATH)
 include $(BASE_PATH)/../../../../scripting/lua/socket/Android.mk
-include $(BASE_PATH)/../../../../scripting/lua/lfs/Android.mk
+include $(BASE_PATH)/../../../../scripting/lua/luafilesystem/Android.mk
 
 $(call import-module,cocos2dx)
 $(call import-module,CocosDenshion/android)
 $(call import-module,scripting/lua/proj.android/jni)
-
-
