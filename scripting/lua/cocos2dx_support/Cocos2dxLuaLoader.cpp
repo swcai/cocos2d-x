@@ -113,6 +113,59 @@ extern "C"
         if (f == NULL) lua_pushstring(L, dlerror());
         return f;
     }
+    static const char *pushnexttemplate (lua_State *L, const char *path) {
+        const char *l;
+        while (*path == *LUA_PATHSEP) path++;  /* skip separators */
+        if (*path == '\0') return NULL;  /* no more templates */
+        l = strchr(path, *LUA_PATHSEP);  /* find next separator */
+        if (l == NULL) l = path + strlen(path);
+        lua_pushlstring(L, path, l - path);  /* template */
+        return l;
+    }
+
+
+    static int readable (const char *filename) {
+        FILE *f = fopen(filename, "r");  /* try to open file */
+        if (f == NULL) return 0;  /* open failed */
+        fclose(f);
+        return 1;
+    }
+
+
+    static const char *findfile (lua_State *L, const char *name,
+            const char *pname) {
+        CCLog("findfile entered");
+        const char *path;
+        name = luaL_gsub(L, name, ".", LUA_DIRSEP);
+        CCLog("name = %s", name);
+        lua_getfield(L, LUA_ENVIRONINDEX, pname);
+        path = lua_tostring(L, -1);
+        CCLog("here?");
+        if (path == NULL) {
+            CCLog("path is null");
+            // luaL_error(L, LUA_QL("package.%s") " must be a string", pname);
+            return NULL;
+        } else {
+            CCLog(path);
+        }
+        lua_pushliteral(L, "");  /* error accumulator */
+        CCLog("1");
+        while ((path = pushnexttemplate(L, path)) != NULL) {
+            const char *filename;
+            filename = luaL_gsub(L, lua_tostring(L, -1), LUA_PATH_MARK, name);
+            lua_remove(L, -2);  /* remove path template */
+            CCLog("findfile %s", filename);
+            if (readable(filename))  /* does file exist and is readable? */ {
+                CCLog("3");
+                return filename;  /* return that file name */
+            }
+            lua_pushfstring(L, "\n\tno file " LUA_QS, filename);
+            lua_remove(L, -2);  /* remove file name */
+            lua_concat(L, 2);  /* add entry to possible error message */
+        }
+        CCLog("2");
+        return NULL;  /* not found */
+    }
 #endif
 
     void mkDirAndCopySharedLib(std::string path, std::string filename) {
@@ -169,6 +222,8 @@ extern "C"
             fclose(pFile);
         }
 
+        const char * t = findfile(L, "socket.core", "path");
+        if (t != NULL) CCLog(t);
         /* This part is used to dlopen and dlsym */
         CCLog("dlopen");
         void *lib = dlopen("/system/lib/libz.so", RTLD_NOW);
