@@ -14,9 +14,10 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../lua \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src \
                     $(LOCAL_PATH)/../lua 
 
-LOCAL_SHARED_LIBRARIES := libhellolua
+# LOCAL_SHARED_LIBRARIES := libhellolua
 
 LOCAL_CFLAGS := -fPIC
+LOCAL_LDLIBS := -lhellolua -L$(LOCAL_PATH)/../../../samples/HelloLua/proj.android/libs/armeabi/
 # LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
 
 include $(BUILD_SHARED_LIBRARY)
