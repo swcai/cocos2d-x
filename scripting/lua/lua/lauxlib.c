@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <android/log.h>
 
 /* This file uses only the official API of Lua.
 ** Any function declared here could be written as an application function.
@@ -82,15 +83,23 @@ LUALIB_API void luaL_where (lua_State *L, int level) {
   lua_pushliteral(L, "");  /* else, no information available... */
 }
 
+#define MAX_LEN         (1024)
 
 LUALIB_API int luaL_error (lua_State *L, const char *fmt, ...) {
-  va_list argp;
-  va_start(argp, fmt);
-  luaL_where(L, 1);
-  lua_pushvfstring(L, fmt, argp);
-  va_end(argp);
-  lua_concat(L, 2);
-  return lua_error(L);
+    char buf[MAX_LEN];
+
+    va_list argp;
+    va_start(argp, fmt);
+    vsprintf(buf, fmt, argp);
+
+    luaL_where(L, 1);
+    lua_pushvfstring(L, fmt, argp);
+    va_end(argp);
+
+    __android_log_print(ANDROID_LOG_ERROR, "cocos2d-x luaL_error",  buf);
+
+    lua_concat(L, 2);
+    return lua_error(L);
 }
 
 /* }====================================================== */

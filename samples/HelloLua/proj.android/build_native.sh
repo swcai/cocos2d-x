@@ -68,27 +68,15 @@ done
 if [[ "$buildexternalsfromsource" ]]; then
     echo "Building external dependencies from source"
     "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" $* \
-        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/source" 
+        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/source"
 else
     echo "Using prebuilt externals"
     "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" $* \
-        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/prebuilt" 
+        "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/prebuilt"
 fi
 
 mkdir -p "$APP_ANDROID_ROOT"/assets/mime/
 mkdir -p "$APP_ANDROID_ROOT"/assets/socket/
-if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/libmimecore.so ]; then
-	cp -f "$APP_ANDROID_ROOT"/libs/armeabi/libmimecore.so "$APP_ANDROID_ROOT"/assets/mime/core.so
-fi
-
-if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/libsocketcore.so ]; then
-	cp -f "$APP_ANDROID_ROOT"/libs/armeabi/libsocketcore.so "$APP_ANDROID_ROOT"/assets/socket/core.so
-fi
-
-if [ -f "$APP_ANDROID_ROOT"/libs/armeabi/lfs.so ]; then
-	cp -f "$APP_ANDROID_ROOT"/libs/armeabi/lfs.so "$APP_ANDROID_ROOT"/assets/lfs.so
-fi
-
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/mime.lua "$APP_ANDROID_ROOT"/assets/
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/socket.lua "$APP_ANDROID_ROOT"/assets/
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/ltn12.lua "$APP_ANDROID_ROOT"/assets/
@@ -97,7 +85,6 @@ cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/tp.lua "$APP_ANDROID_ROOT"/asset
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/ftp.lua "$APP_ANDROID_ROOT"/assets/socket
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/smtp.lua "$APP_ANDROID_ROOT"/assets/socket
 cp -f "$COCOS2DX_ROOT"/scripting/lua/socket/src/url.lua "$APP_ANDROID_ROOT"/assets/socket
-
 # copy remdebug.lua to assets
 mkdir -p "$APP_ANDROID_ROOT"/assets/remdebug/
 cp -rf "$COCOS2DX_ROOT"/scripting/lua/remdebug/src/remdebug/engine.lua "$APP_ANDROID_ROOT"/assets/remdebug/

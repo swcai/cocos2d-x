@@ -53,6 +53,6 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/ \
                     $(LOCAL_PATH)/../../../../cocos2dx/kazmath/include \
                     $(LOCAL_PATH)/../../../../cocos2dx/platform/android
 
-LOCAL_LDLIBS := -ldl
+# LOCAL_LDLIBS := -ldl
 
 include $(BUILD_STATIC_LIBRARY)

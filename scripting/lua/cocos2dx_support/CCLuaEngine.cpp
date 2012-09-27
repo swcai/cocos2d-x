@@ -29,6 +29,9 @@ extern "C" {
 #include "lualib.h"
 #include "lauxlib.h"
 #include "tolua_fix.h"
+#include "luasocket.h"
+#include "mime.h"
+#include "lfs.h"
 }
 
 #include "cocos2d.h"
@@ -210,9 +213,12 @@ bool CCLuaEngine::init(void)
     tolua_Cocos2d_open(m_state);
     toluafix_open(m_state);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    addLuaLoader(loader_C_Android);
+//    addLuaLoader(loader_C_Android);
     addLuaLoader(loader_Lua_Android);
 #endif
+    luaopen_lfs(m_state);
+    luaopen_socket_core(m_state);
+    luaopen_mime_core(m_state);
     return true;
 }
 

@@ -20,8 +20,11 @@
 #include "lualib.h"
 
 
+#include <android/log.h>
 
-
+static void Log(char *str) {
+    __android_log_print(ANDROID_LOG_DEBUG, "cocos2d-x luaPrint",  str);
+}
 /*
 ** If your system does not support `stdout', you can just remove this function.
 ** If you need, you can define your own `print' function, following this
@@ -41,8 +44,13 @@ static int luaB_print (lua_State *L) {
     if (s == NULL)
       return luaL_error(L, LUA_QL("tostring") " must return a string to "
                            LUA_QL("print"));
-    if (i>1) fputs("\t", stdout);
+    if (i>1) {
+        fputs("\t", stdout);
+        Log("\t");
+    }
     fputs(s, stdout);
+    Log(s);
+
     lua_pop(L, 1);  /* pop result */
   }
   fputs("\n", stdout);

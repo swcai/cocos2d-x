@@ -6,3 +6,4 @@ cd bin
 adb uninstall org.cocos2dx.hellolua
 adb install HelloLua-debug.apk
 cd ..
+adb logcat
