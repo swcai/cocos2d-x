@@ -36,11 +36,13 @@ extern "C"
 {
     int loader_Lua_Android(lua_State *L)
     {
-        std::string filename(luaL_checkstring(L, 1));
+        std::string filename(luaL_gsub(L, luaL_checkstring(L, 1), ".", "/")); 
         filename.append(".lua");
+        lua_remove(L, -1);
 
         CCLog("loader_Lua_Android: %s", filename.c_str());
         CCString* pFileContent = CCString::createWithContentsOfFile(filename.c_str());
+        CCLog("loader_Lua_Android: %s %d", filename.c_str(), pFileContent->length());
 
         if (pFileContent)
         {
@@ -49,6 +51,7 @@ extern "C"
                 luaL_error(L, "error loading module %s from file %s :\n\t%s",
                     lua_tostring(L, 1), filename.c_str(), lua_tostring(L, -1));
             }
+            CCLog("exits from loader_Lua_Android");
         }
         else
         {
@@ -167,7 +170,7 @@ extern "C"
         return NULL;  /* not found */
     }
 #endif
-
+#if 0
     void mkDirAndCopySharedLib(std::string path, std::string filename) {
         path.append(filename);
         const char *pStr = path.c_str();
@@ -249,5 +252,5 @@ extern "C"
         CCLog("happy return");
         return 1;  /* library loaded successfully */
     }
-
+#endif
 }

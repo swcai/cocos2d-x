@@ -22,7 +22,7 @@ local step_over = false
 local step_level = 0
 local stack_level = 0
 
-local controller_host = "localhost"
+local controller_host = "192.168.42.200"
 local controller_port = 8171
 
 local function set_breakpoint(file, line)
@@ -265,7 +265,7 @@ end
 -- Tries to start the debug session by connecting with a controller
 --
 function start()
-  pcall(require, "remdebug.config")
+--  pcall(require, "remdebug.config")
   local server = socket.connect(controller_host, controller_port)
   if server then
     _TRACEBACK = function (message) 

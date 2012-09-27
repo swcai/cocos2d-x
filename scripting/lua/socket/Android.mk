@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := libluasocket
+LOCAL_MODULE    := libluasocket_static
 
 LOCAL_MODULE_FILENAME := libsocketcore
 
@@ -27,8 +27,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/src \
                     $(LOCAL_PATH)/../lua 
 
 #LOCAL_SHARED_LIBRARIES := libhellolua
-LOCAL_CFLAGS := -fPIC
-LOCAL_LDLIBS := -lhellolua -L$(LOCAL_PATH)/../../../samples/HelloLua/proj.android/libs/armeabi/
+#LOCAL_CFLAGS := -fPIC
+#LOCAL_LDLIBS := -lhellolua -L$(LOCAL_PATH)/../../../samples/HelloLua/proj.android/libs/armeabi/
 
 #LOCAL_CFLAGS += -fvisibility=hidden
 #LOCAL_CFLAGS += -fPIC
@@ -36,11 +36,11 @@ LOCAL_LDLIBS := -lhellolua -L$(LOCAL_PATH)/../../../samples/HelloLua/proj.androi
 #LOCAL_LDLIBS := -lhellolua
 #LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := libluamime
+LOCAL_MODULE    := libluamime_static
 
 LOCAL_MODULE_FILENAME := libmimecore
 
@@ -54,11 +54,11 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/src \
                     $(LOCAL_PATH)/../lua 
 
 #LOCAL_SHARED_LIBRARIES := libhellolua
-LOCAL_CFLAGS := -fPIC
-LOCAL_LDLIBS := -lhellolua -L$(LOCAL_PATH)/../../../samples/HelloLua/proj.android/libs/armeabi/
+#LOCAL_CFLAGS := -fPIC
+#LOCAL_LDLIBS := -lhellolua -L$(LOCAL_PATH)/../../../samples/HelloLua/proj.android/libs/armeabi/
 #LOCAL_LDLIBS := -lhellolua
 
 #LOCAL_CFLAGS += -fvisibility=hidden
 #LOCAL_CFLAGS += -fPIC
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)

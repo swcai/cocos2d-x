@@ -1,12 +1,11 @@
-package.path = "?.lua;./?.lua;"..package.path
-package.cpath = "?.so;./?.so;/data/data/org.cocos2dx.hellolua/lua/?.so;"..package.cpath
+package.path = "./?.lua;"..package.path
 
 -- for CCLuaEngine traceback
 function __G__TRACKBACK__(msg)
-    print("----------------------------------------")
-    print("LUA ERROR: " .. tostring(msg) .. "\n")
-    print(debug.traceback())
-    print("----------------------------------------")
+    cclog("----------------------------------------")
+    cclog("LUA ERROR: " .. tostring(msg) .. "\n")
+    cclog(debug.traceback())
+   	cclog("----------------------------------------")
 end
 
 local function main()
@@ -15,27 +14,16 @@ local function main()
     collectgarbage("setstepmul", 5000)
 
     local cclog = function(...)
-        CCLuaLog(string.format(...))
+        print(string.format(...))
     end
 
     require "hello2"
     cclog("result is " .. myadd(3, 5))
 
-    cclog(package.path)
-	require "lfs"
-    cclog(package.cpath)
-	cclog(lfs.currentdir())
-
-    require "socket"
-    cclog(package.path)
-    conn, err = socket.connect("127.0.0.1", 8171)
-    cclog(package.cpath)
-    if not conn then
-      cclog(err)
-    else
-      cclog("succeed")
-    end
-    ---------------
+	table.foreach(package.loaded, cclog)
+	require "remdebug.engine"
+	remdebug.engine.config { host = "192.168.42.200" }
+	remdebug.engine.start()
 
     local winSize = CCDirector:sharedDirector():getWinSize()
 

@@ -39,8 +39,6 @@ function bind(host, port, backlog)
     return sock
 end
 
-try = newtry()
-
 function choose(table)
     return function(name, opt1, opt2)
         if base.type(name) ~= "string" then
@@ -130,4 +128,3 @@ end
 sourcet["default"] = sourcet["until-closed"]
 
 source = choose(sourcet)
-
