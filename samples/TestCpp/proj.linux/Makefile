@@ -69,7 +69,7 @@ OBJECTS = ../Classes/AccelerometerTest/AccelerometerTest.o \
 			../Classes/ExtensionsTest/CocosBuilderTest/ButtonTest/ButtonTestLayer.o \
 			../Classes/ExtensionsTest/CocosBuilderTest/CocosBuilderTest.o \
 			../Classes/ExtensionsTest/CocosBuilderTest/HelloCocosBuilder/HelloCocosBuilderLayer.o \
-                        ../Classes/ExtensionsTest/CocosBuilderTest/AnimationsTest/AnimationsLayer.o \
+                        ../Classes/ExtensionsTest/CocosBuilderTest/AnimationsTest/AnimationsTestLayer.o \
 			../Classes/ExtensionsTest/CocosBuilderTest/MenuTest/MenuTestLayer.o \
 			../Classes/ExtensionsTest/CocosBuilderTest/TestHeader/TestHeaderLayer.o \
 			../Classes/ExtensionsTest/ControlExtensionTest/CCControlButtonTest/CCControlButtonTest.o \
@@ -78,6 +78,8 @@ OBJECTS = ../Classes/AccelerometerTest/AccelerometerTest.o \
 			../Classes/ExtensionsTest/ControlExtensionTest/CCControlSceneManager.o \
 			../Classes/ExtensionsTest/ControlExtensionTest/CCControlSliderTest/CCControlSliderTest.o \
 			../Classes/ExtensionsTest/ControlExtensionTest/CCControlSwitchTest/CCControlSwitchTest.o \
+			../Classes/ExtensionsTest/ControlExtensionTest/CCControlPotentiometerTest/CCControlPotentiometerTest.o \
+			../Classes/ExtensionsTest/ControlExtensionTest/CCControlStepperTest/CCControlStepperTest.o \
 			../Classes/ExtensionsTest/TableViewTest/TableViewTestScene.o \
 			../Classes/ExtensionsTest/TableViewTest/CustomTableViewCell.o \
 			../Classes/ExtensionsTest/ExtensionsTest.o \
