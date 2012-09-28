@@ -250,7 +250,7 @@ int CCLuaEngine::executeString(const char *codes)
 
     if (nRet != 0)
     {
-        CCLOG("[LUA ERROR] %s", lua_tostring(m_state, -1));
+        CCLog("[LUA ERROR] %s", lua_tostring(m_state, -1));
         lua_pop(m_state, 1);
         return nRet;
     }
@@ -264,7 +264,7 @@ int CCLuaEngine::executeScriptFile(const char* filename)
 
     if (nRet != 0)
     {
-        CCLOG("[LUA ERROR] %s", lua_tostring(m_state, -1));
+        CCLog("[LUA ERROR] %s", lua_tostring(m_state, -1));
         lua_pop(m_state, 1);
         return nRet;
     }
@@ -276,7 +276,7 @@ int CCLuaEngine::executeGlobalFunction(const char* functionName)
     lua_getglobal(m_state, functionName);       /* query function by name, stack: function */
     if (!lua_isfunction(m_state, -1))
     {
-        CCLOG("[LUA ERROR] name '%s' does not represent a Lua function", functionName);
+        CCLog("[LUA ERROR] name '%s' does not represent a Lua function", functionName);
         lua_pop(m_state, 1);
         return 0;
     }
@@ -286,7 +286,7 @@ int CCLuaEngine::executeGlobalFunction(const char* functionName)
 
     if (error)
     {
-        CCLOG("[LUA ERROR] %s", lua_tostring(m_state, - 1));
+        CCLog("[LUA ERROR] %s", lua_tostring(m_state, - 1));
         lua_pop(m_state, 1); // clean error message
         return 0;
     }
@@ -479,7 +479,7 @@ int CCLuaEngine::executeFunctionByHandler(int nHandler, int numArgs)
         {
             if (traceback == 0)
             {
-                CCLOG("[LUA ERROR] %s", lua_tostring(m_state, - 1));    /* stack: ... error */
+                CCLog("[LUA ERROR] %s", lua_tostring(m_state, - 1));    /* stack: ... error */
                 lua_pop(m_state, 1); // remove error message from stack
             }
             return 0;
@@ -645,7 +645,7 @@ bool CCLuaEngine::pushFunction(int nHandler)
     toluafix_get_function_by_refid(m_state, nHandler);          /* stack: ... func */
     if (!lua_isfunction(m_state, -1))
     {
-        CCLOG("[LUA ERROR] function refid '%d' does not reference a Lua function", nHandler);
+        CCLog("[LUA ERROR] function refid '%d' does not reference a Lua function", nHandler);
         lua_pop(m_state, 1);
         return false;
     }

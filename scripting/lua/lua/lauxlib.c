@@ -34,6 +34,15 @@
 					lua_gettop(L) + (i) + 1)
 
 
+static void Log(char * fmt, ...) {
+    char buf[1024];
+    va_list argp;
+    va_start(argp, fmt);
+    vsprintf(buf, fmt, argp);
+    va_end(argp);
+    __android_log_print(ANDROID_LOG_ERROR, "cocos2d-x lua panic",  buf);
+}
+
 /*
 ** {======================================================
 ** Error-report functions
@@ -649,6 +658,7 @@ static int panic (lua_State *L) {
   (void)L;  /* to avoid warnings */
   fprintf(stderr, "PANIC: unprotected error in call to Lua API (%s)\n",
                    lua_tostring(L, -1));
+  Log("PANIC: unprotected error in call to Lua API (%s)\n", lua_tostring(L, -1));
   return 0;
 }
 
