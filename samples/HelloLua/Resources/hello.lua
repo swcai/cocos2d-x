@@ -22,18 +22,21 @@ local function createGameLayer()
 	-- assume the same width of sprite 0 as sprite1
 	local place = CCPlace:create(CCPointMake(sprite0:getContentSize().width * 3 / 2, winSize.height/2))
 	local move = CCMoveBy:create(20, CCPointMake(- sprite0:getContentSize().width * 2, 0))
-	local array = CCArray:create()
-	array:addObject(firstmove)
-	array:addObject(place)
-	array:addObject(move)
-	local seq = CCSequence:create(array)
-	local action0 = sprite0:runAction(CCSequence:createWithTwoActions(firstmove0, CCRepeatForever:create(seq)))
+
+--[[
+	-- sprite 0
+	local testfunc = function() 
+		sprite0:runAction(CCRepeatForever:create(CCSequence:createWithTwoActions(place, move)))
+	end
+	local callFuncAction0 = CCCallFunc:create(testfunc)
+	local seq0 = CCSequence:createWithTwoActions(firstmove, callFuncAction0)
+	local action0 = sprite0:runAction(seq0)
 	action0:setTag(0)
-	local seq = CCSequence:create(array)
-	local action0 = sprite0:runAction(CCSequence:createWithTwoActions(firstmove0, CCRepeatForever:create(seq)))
-	action0:setTag(0)
-	local action1 = sprite1:runAction(CCRepeatForever:create(seq))
+
+	-- sprite 1
+	local action1 = sprite1:runAction(CCRepeatForever:create(CCSequence:createWithTwoActions(place, move)))
 	action1:setTag(1)
+]]--
 
 	return layer
 end
